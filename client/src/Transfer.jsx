@@ -1,7 +1,17 @@
 import { useState } from "react";
 import server from "./server";
 
-function Transfer({ address, setBalance }) {
+
+const domain = window.location.host;
+const origin = window.location.origin;
+
+async function signMessage(signer, message) {
+  const rawMessage = JSON.stringify(message);
+  const signature = await signer.signMessage(rawMessage);
+  return { rawMessage, signature };
+}
+
+function Transfer({ setBalance, signer }) {
   const [sendAmount, setSendAmount] = useState("");
   const [recipient, setRecipient] = useState("");
 
@@ -9,15 +19,16 @@ function Transfer({ address, setBalance }) {
 
   async function transfer(evt) {
     evt.preventDefault();
-
+    const request = {
+      amount: parseInt(sendAmount),
+      recipient,
+    };
+    const { rawMessage, signature } = await signMessage(signer, request);
+    console.log(signature);
     try {
       const {
         data: { balance },
-      } = await server.post(`send`, {
-        sender: address,
-        amount: parseInt(sendAmount),
-        recipient,
-      });
+      } = await server.post(`send`, { rawMessage, signature });
       setBalance(balance);
     } catch (ex) {
       alert(ex.response.data.message);
