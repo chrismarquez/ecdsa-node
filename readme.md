@@ -20,12 +20,10 @@ The client folder contains a [react app](https://reactjs.org/) using [vite](http
 
 ### Server
 
-The server folder contains a node.js server using [express](https://expressjs.com/). To run the server, follow these steps:
+The server folder contains a Rust server using [Rocket](https://rocket.rs/). To run the server, follow these steps:
 
 1. Open a terminal within the `/server` folder 
-2. Run `npm install` to install all the depedencies 
-3. Run `node index` to start the server 
+2. Run `cargo build` to install all the depedencies 
+3. Run `cargo run` to start the server 
 
-The application should connect to the default server port (3042) automatically! 
-
-_Hint_ - Use [nodemon](https://www.npmjs.com/package/nodemon) instead of `node` to automatically restart the server on any changes.
+The application should connect to the default server port (3042) automatically!
